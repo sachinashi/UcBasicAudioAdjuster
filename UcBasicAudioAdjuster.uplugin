@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.5.4.0001",
+	"FriendlyName": "UcBasicAudioAdjuster",
+	"Description": "Adjust Sound mix Parameter",
+	"Category": "Other",
+	"CreatedBy": "sachinashi",
+	"CreatedByURL": "https://github.com/sachinashi/UcBasicAudioAdjuster",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"EngineVersion": "5.4.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "UcBasicAudioAdjuster",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
