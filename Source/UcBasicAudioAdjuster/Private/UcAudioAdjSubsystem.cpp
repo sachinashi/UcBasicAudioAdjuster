@@ -17,10 +17,24 @@ UUcAudioAdjSubsystem::UUcAudioAdjSubsystem()
 	{
 		SubsystemHelperClass = TempSubClass;
 	}
+
+	// 各種サウンドクラスを生成
+	BaseModifier = GetDefault<UUcAudioAdjDeveloperSettings>()->SoundMixClass.LoadSynchronous();
+	SoundClassMaster = GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassMaster.LoadSynchronous();
+	SoundClassMusic = GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassMusic.LoadSynchronous();
+	SoundClassSFX = GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassSFX.LoadSynchronous();
+	SoundClassVoice = GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassVoice.LoadSynchronous();
+
+	VolumeCurrentMaster = VolumeMaster = SoundClassMaster->Properties.Volume;
+	VolumeCurrentMusic = VolumeMusic = SoundClassMusic->Properties.Volume;
+	VolumeCurrentSFX = VolumeSFX = SoundClassSFX->Properties.Volume;
+	VolumeCurrentVoice = VolumeVoice = SoundClassVoice->Properties.Volume;
+
 }
 
 void UUcAudioAdjSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
+	Super::Initialize(Collection);
 	SubsystemHelper = nullptr;
 	if (SubsystemHelperClass)
 	{
@@ -42,17 +56,18 @@ void UUcAudioAdjSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		UE_LOG(LogTemp, Error, TEXT("UcAudioAdjSubsystemHelperClass is not set in the project settings"));
 	}
 
-	// 各種サウンドクラスを生成
-	BaseModifier			= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundMixClass.LoadSynchronous();
-	SoundClassMaster	= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassMaster.LoadSynchronous();
-	SoundClassMusic	= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassMusic.LoadSynchronous();
-	SoundClassSFX		= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassSFX.LoadSynchronous();
-	SoundClassVoice		= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassVoice.LoadSynchronous();
+	//// 各種サウンドクラスを生成
+	// ここで処理を行うと、"SoundClassMasterがnull"のエラーが発生するのでコンストラクタに移動
+	//BaseModifier			= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundMixClass.LoadSynchronous();
+	//SoundClassMaster	= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassMaster.LoadSynchronous();
+	//SoundClassMusic	= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassMusic.LoadSynchronous();
+	//SoundClassSFX		= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassSFX.LoadSynchronous();
+	//SoundClassVoice		= GetDefault<UUcAudioAdjDeveloperSettings>()->SoundClassVoice.LoadSynchronous();
 
-	VolumeCurrentMaster		= VolumeMaster	= SoundClassMaster->Properties.Volume;
-	VolumeCurrentMusic		= VolumeMusic	= SoundClassMusic->Properties.Volume;
-	VolumeCurrentSFX			= VolumeSFX		= SoundClassSFX->Properties.Volume;
-	VolumeCurrentVoice		= VolumeVoice	= SoundClassVoice->Properties.Volume;
+	//VolumeCurrentMaster		= VolumeMaster	= SoundClassMaster->Properties.Volume;
+	//VolumeCurrentMusic		= VolumeMusic	= SoundClassMusic->Properties.Volume;
+	//VolumeCurrentSFX			= VolumeSFX		= SoundClassSFX->Properties.Volume;
+	//VolumeCurrentVoice		= VolumeVoice	= SoundClassVoice->Properties.Volume;
 }
 
 void UUcAudioAdjSubsystem::Deinitialize()
@@ -64,6 +79,7 @@ void UUcAudioAdjSubsystem::Deinitialize()
 	SoundClassMusic = nullptr;
 	SoundClassSFX = nullptr;
 	SoundClassVoice = nullptr;
+	Super::Deinitialize();
 }
 
 USoundBase* UUcAudioAdjSubsystem::GetDecision()
